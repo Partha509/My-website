@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>myweb</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #f9f9f9;
+      border-right: 1px solid #ddd;
+      padding: 20px 0;
+    }
+    .sidebar .profile {
+      display: flex;
+      align-items: center;
+      padding: 0 20px 20px;
+      border-bottom: 1px solid #eee;
+    }
+    .sidebar .profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .sidebar .profile h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 0;
+    }
+    .sidebar ul li {
+      padding: 12px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #333;
+    }
+    .sidebar ul li:hover,
+    .sidebar ul li.active {
+      background: #eee;
+      font-weight: bold;
+    }
+
+    /* Content */
+    .content {
+      flex: 1;
+      padding: 30px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+
+    /* Articles Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table th, table td {
+      text-align: left;
+      padding: 14px;
+      border-bottom: 1px solid #ddd;
+    }
+    table th {
+      font-weight: bold;
+    }
+
+    /* Pill Badges */
+    .badge {
+      padding: 5px 12px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .badge.published {
+      background: #e6f4ea;
+      color: #1e7d34;
+    }
+    .badge.draft {
+      background: #fff8e1;
+      color: #a67c00;
+    }
+
+    /* Pagination */
+    .pagination {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+    .pagination button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 50%;
+    }
+    .pagination button.active {
+      background: #000;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="profile">
+      <img src="https://via.placeholder.com/40" alt="Profile Picture">
+      <h3>Partha Carter</h3>
+    </div>
+    <ul>
+      <li onclick="showSection('profile')">👤 Profile</li>
+      <li class="active" onclick="showSection('articles')">📄 My Articles</li>
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- Profile Section -->
+    <div id="profile" class="section" style="display:none;">
+      <h2>Profile</h2>
+      <p><b>Full Name:</b> Partha Sarathi Saha</p>
+      <p><b>Email:</b> partha.cse.20230104017@aust.edu</p>
+      <p><b>Date of Joining:</b> August 17, 2025</p>
+    </div>
+
+    <!-- Articles Section -->
+    <div id="articles" class="section">
+      <h2>My Articles</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Last Edited</th>
+          </tr>
+        </thead>
+        <tbody id="articles-body">
+          <!-- Articles will load here -->
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+
+  <script>
+    // Dummy articles data
+    const articles = [
+      {title: "The Art of Storytelling: A Guide to Captivating Your Audience", status: "Published", lastEdited: "2 days ago"},
+      {title: "Crafting Compelling Characters: A Step-by-Step Approach", status: "Draft", lastEdited: "1 week ago"},
+      {title: "Mastering Dialogue in Fiction: Techniques for Realistic Conversations", status: "Published", lastEdited: "2 weeks ago"},
+      {title: "Building Worlds: A Guide to Worldbuilding in Fiction", status: "Published", lastEdited: "3 weeks ago"},
+      {title: "Editing Made Easy: Tips for Self-Editing Your Work", status: "Draft", lastEdited: "1 month ago"},
+      {title: "Writing with Emotion: How to Connect with Readers", status: "Published", lastEdited: "2 months ago"},
+      {title: "From Idea to Outline: Structuring Your Story", status: "Draft", lastEdited: "3 months ago"},
+      {title: "Finding Your Writing Voice", status: "Published", lastEdited: "4 months ago"},
+      {title: "The Importance of Conflict in Storytelling", status: "Published", lastEdited: "5 months ago"}
+    ];
+
+    const perPage = 3;
+    let currentPage = 1;
+
+    function renderArticles(page) {
+      const tbody = document.getElementById("articles-body");
+      tbody.innerHTML = "";
+
+      const start = (page - 1) * perPage;
+      const end = start + perPage;
+      const pageArticles = articles.slice(start, end);
+
+      pageArticles.forEach(a => {
+        const badgeClass = a.status.toLowerCase();
+        tbody.innerHTML += `
+          <tr>
+            <td>${a.title}</td>
+            <td><span class="badge ${badgeClass}">${a.status}</span></td>
+            <td>${a.lastEdited}</td>
+          </tr>
+        `;
+      });
+
+      renderPagination();
+    }
+
+    function renderPagination() {
+      const pagination = document.getElementById("pagination");
+      pagination.innerHTML = "";
+
+      const pageCount = Math.ceil(articles.length / perPage);
+
+      // Previous button
+      const prevBtn = document.createElement("button");
+      prevBtn.innerHTML = "&lt;";
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => { goToPage(currentPage - 1); };
+      pagination.appendChild(prevBtn);
+
+      // Page buttons
+      for (let i = 1; i <= pageCount; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        if (i === currentPage) btn.classList.add("active");
+        btn.onclick = () => goToPage(i);
+        pagination.appendChild(btn);
+      }
+
+      // Next button
+      const nextBtn = document.createElement("button");
+      nextBtn.innerHTML = "&gt;";
+      nextBtn.disabled = currentPage === pageCount;
+      nextBtn.onclick = () => { goToPage(currentPage + 1); };
+      pagination.appendChild(nextBtn);
+    }
+
+    function goToPage(page) {
+      currentPage = page;
+      renderArticles(page);
+    }
+
+    // Section switcher
+    function showSection(id) {
+      document.querySelectorAll(".section").forEach(sec => sec.style.display = "none");
+      document.getElementById(id).style.display = "block";
+
+      document.querySelectorAll(".sidebar ul li").forEach(li => li.classList.remove("active"));
+      event.target.classList.add("active");
+    }
+
+    // Initial load
+    renderArticles(currentPage);
+  </script>
+</body>
+</html>
