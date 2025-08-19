@@ -1,4 +1,51 @@
+/* Sidebar */
+.sidebar {
+  width: 200px;              
+  min-height: 100vh;         
+  background-color: #be4d07; 
+  color: black;              
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
+/* Sidebar links */
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 0;
+  display: block;
+  transition: 0.2s;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
+}
+
+/* Profile section */
+.sidebar .profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar .profile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Sidebar header */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Content area */
 .content {
   flex: 1;
   padding: 30px;
@@ -7,6 +54,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Table */
 .articles-table {
   width: 100%;
   border-collapse: collapse;
@@ -16,7 +64,8 @@
   background-color: white;
 }
 
-.articles-table th, .articles-table td {
+.articles-table th,
+.articles-table td {
   padding: 16px 20px;
   text-align: left;
   border-bottom: 1px solid #e0e0e0;
@@ -31,6 +80,7 @@
   border-bottom: none;
 }
 
+/* Badges */
 .badge.published {
   color: #1890ff;
   font-weight: 500;
@@ -41,7 +91,7 @@
   font-weight: 500;
 }
 
-
+/* Pagination */
 .pagination {
   margin-top: 20px;
   display: flex;
@@ -72,21 +122,3 @@
   cursor: not-allowed;
   opacity: 0.5;
 }
-
-.sidebar .profile img {
-  width: 40px;          
-  height: 40px;         
-  border-radius: 50%;  
-  object-fit: cover;    
-  margin-right: 10px;  
-}
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.profile {
-  display: flex;
-  align-items: center;
-}
-
