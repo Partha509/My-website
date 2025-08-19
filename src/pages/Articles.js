@@ -2,15 +2,15 @@ import { useState } from "react";
 
 function Articles() {
   const articles = [
-    {title: "The Art of Storytelling", status: "Published", lastEdited: "2 days ago"},
-    {title: "Crafting Characters", status: "Draft", lastEdited: "1 week ago"},
-    {title: "Mastering Dialogue", status: "Published", lastEdited: "2 weeks ago"},
-    {title: "Worldbuilding Guide", status: "Published", lastEdited: "3 weeks ago"},
-    {title: "Editing Made Easy", status: "Draft", lastEdited: "1 month ago"},
-    {title: "Writing with Emotion", status: "Published", lastEdited: "2 months ago"},
-    {title: "From Idea to Outline", status: "Draft", lastEdited: "3 months ago"},
-    {title: "Finding Your Voice", status: "Published", lastEdited: "4 months ago"},
-    {title: "The Importance of Conflict", status: "Published", lastEdited: "5 months ago"}
+    { title: "The Art of Storytelling: A Guide to Captivating Your Audience", status: "Published", lastEdited: "2 days ago" },
+    { title: "Crafting Compelling Characters: A Step-by-Step Approach", status: "Draft", lastEdited: "1 week ago" },
+    { title: "Mastering Dialogue in Fiction: Techniques for Realistic Conversations", status: "Published", lastEdited: "2 weeks ago" },
+    { title: "Worldbuilding Guide", status: "Published", lastEdited: "3 weeks ago" },
+    { title: "Editing Made Easy", status: "Draft", lastEdited: "1 month ago" },
+    { title: "Writing with Emotion", status: "Published", lastEdited: "2 months ago" },
+    { title: "From Idea to Outline", status: "Draft", lastEdited: "3 months ago" },
+    { title: "Finding Your Voice", status: "Published", lastEdited: "4 months ago" },
+    { title: "The Importance of Conflict", status: "Published", lastEdited: "5 months ago" }
   ];
 
   const perPage = 3;
@@ -21,8 +21,9 @@ function Articles() {
 
   return (
     <div className="content">
-      <h2>My Articles</h2>
-      <table>
+      <h2 style={{ marginBottom: '20px', fontWeight: 600 }}>My Articles</h2>
+
+      <table className="articles-table">
         <thead>
           <tr>
             <th>Title</th>
@@ -34,11 +35,7 @@ function Articles() {
           {pageArticles.map((a, i) => (
             <tr key={i}>
               <td>{a.title}</td>
-              <td>
-                <span className={`badge ${a.status.toLowerCase()}`}>
-                  {a.status}
-                </span>
-              </td>
+              <td><span className={`badge ${a.status.toLowerCase()}`}>{a.status}</span></td>
               <td>{a.lastEdited}</td>
             </tr>
           ))}
@@ -46,15 +43,11 @@ function Articles() {
       </table>
 
       <div className="pagination">
+        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>&lt;</button>
         {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentPage(i+1)}
-            className={currentPage === i+1 ? "active" : ""}
-          >
-            {i+1}
-          </button>
+          <button key={i} onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? "active" : ""}>{i + 1}</button>
         ))}
+        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>&gt;</button>
       </div>
     </div>
   );
