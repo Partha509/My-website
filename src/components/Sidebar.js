@@ -9,7 +9,7 @@ function Sidebar() {
       <div className="sidebar-header">
         <div className="profile">
           <img src="/image/profile.JPG" alt="Profile" />
-          {!collapsed && <h3>Partha Carter</h3>}
+          {!collapsed && <h3>Partha </h3>}
         </div>
         <button
           className="toggle-btn"
